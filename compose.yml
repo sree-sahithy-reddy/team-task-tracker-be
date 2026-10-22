@@ -1,0 +1,22 @@
+
+services:
+  db:
+    image: postgres:16
+    container_name: team-task-tracker-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: team_task_tracker
+      POSTGRES_USER: task_tracker_user
+      POSTGRES_PASSWORD: local_dev_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U task_tracker_user -d team_task_tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
